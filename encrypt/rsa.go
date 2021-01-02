@@ -1,4 +1,4 @@
-package encrypter
+package encrypt
 
 import (
 	"bytes"

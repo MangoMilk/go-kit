@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	DASH_DATE_FORMAT     = "2006-01-02"
-	SEAMLESS_DATE_FORMAT = "20060102"
+	DateFormatDash     = "2006-01-02"
+	DateFormatSeamless = "20060102"
 )
 
 /*
@@ -16,14 +16,14 @@ const (
  */
 func IntervalDay(bt int64, lt int64) int {
 
-	var btDate string = time.Unix(bt, 0).Format(DASH_DATE_FORMAT)
+	var btDate string = time.Unix(bt, 0).Format(DateFormatDash)
 	btLoc, _ := time.LoadLocation("Local")
-	btTmp, _ := time.ParseInLocation(DASH_DATE_FORMAT, btDate, btLoc)
+	btTmp, _ := time.ParseInLocation(DateFormatDash, btDate, btLoc)
 	var btDateTimestamp int64 = btTmp.Unix()
 
-	var ltDate string = time.Unix(lt, 0).Format(DASH_DATE_FORMAT)
+	var ltDate string = time.Unix(lt, 0).Format(DateFormatDash)
 	ltLoc, _ := time.LoadLocation("Local")
-	ltTmp, _ := time.ParseInLocation(DASH_DATE_FORMAT, ltDate, ltLoc)
+	ltTmp, _ := time.ParseInLocation(DateFormatDash, ltDate, ltLoc)
 	var ltDateTimestamp int64 = ltTmp.Unix()
 
 	diffTime := btDateTimestamp - ltDateTimestamp
@@ -34,11 +34,11 @@ func IntervalDay(bt int64, lt int64) int {
 }
 
 func GetDashDateFormat(t time.Time) string {
-	return t.Format(DASH_DATE_FORMAT)
+	return t.Format(DateFormatDash)
 }
 
 func GetSeamlessDateFormat(t time.Time) string {
-	return t.Format(SEAMLESS_DATE_FORMAT)
+	return t.Format(DateFormatSeamless)
 }
 
 func GetCurDayPassS() int {

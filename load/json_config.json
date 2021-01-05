@@ -1,0 +1,20 @@
+{
+  "name": "Dwarf",
+  "age": 18,
+  "database": {
+    "read": {
+      "host": "127.0.0.1",
+      "port": "3306",
+      "database": "test_read",
+      "username": "root",
+      "password": "root"
+    },
+    "write": {
+      "host": "127.0.0.1",
+      "port": "3306",
+      "database": "test_write",
+      "username": "root",
+      "password": "root"
+    }
+  }
+}

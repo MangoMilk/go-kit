@@ -1,0 +1,18 @@
+APP_NAME: yaml_config
+IP: 127.0.0.1
+PORT: 80
+HOST:
+
+DB:
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  password: root
+  database: test
+
+REDIS:
+  host: 127.0.0.1
+  port: 6379
+  database: 0
+  timeout: 2000
+  auth: 111111

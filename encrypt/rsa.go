@@ -9,6 +9,7 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"os"
+	"strings"
 )
 
 type optionParams interface{}
@@ -45,6 +46,15 @@ func (r *rsaHelper) GeneratePem(bits int, opts ...optionParams) (publicKeyStr, p
 		if k == generatePemPath && v.(string) != "" {
 			isWriteIntoFile = true
 			filePath = v.(string)
+			filePath = strings.TrimRight(filePath, "/")
+			// create pem dir
+			if isExist(filePath) != true {
+				mkdirErr := os.Mkdir(filePath, 0755)
+				if mkdirErr != nil {
+					err = mkdirErr
+					return
+				}
+			}
 		}
 	}
 
@@ -62,7 +72,7 @@ func (r *rsaHelper) GeneratePem(bits int, opts ...optionParams) (publicKeyStr, p
 
 	// write into file
 	if isWriteIntoFile {
-		privateKeyFile, createFileErr := os.Create(filePath + "private_key.pem")
+		privateKeyFile, createFileErr := os.Create(filePath + "/private_key.pem")
 		if privateKeyFile != nil {
 			defer privateKeyFile.Close()
 		}
@@ -97,7 +107,7 @@ func (r *rsaHelper) GeneratePem(bits int, opts ...optionParams) (publicKeyStr, p
 
 	// write into file
 	if isWriteIntoFile {
-		publicKeyFile, createFileErr := os.Create(filePath + "public_key.pem")
+		publicKeyFile, createFileErr := os.Create(filePath + "/public_key.pem")
 		if publicKeyFile != nil {
 			defer publicKeyFile.Close()
 		}
@@ -181,28 +191,28 @@ func (r *rsaHelper) Decrypt(ciphertext, priKeyPem []byte) (plaintext []byte) {
 // @param crypto.Hash hashAlg
 //
 // @return string sign, error err
-func (r *rsaHelper) Signature(plaintext, priKeyPem []byte, hashAlg crypto.Hash) (sign string, err error)  {
+func (r *rsaHelper) Signature(plaintext, priKeyPem []byte, hashAlg crypto.Hash) (sign string, err error) {
 	sign = ""
 	err = nil
 
-	block,_:=pem.Decode(priKeyPem)
+	block, _ := pem.Decode(priKeyPem)
 
 	//privateKey,x509DecodeErr :=x509.ParsePKCS8PrivateKey(block.Bytes)
-	privateKey,x509DecodeErr :=x509.ParsePKCS1PrivateKey(block.Bytes)
-	if x509DecodeErr != nil{
+	privateKey, x509DecodeErr := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if x509DecodeErr != nil {
 		err = x509DecodeErr
 		return
 	}
 
 	hashInstance := hashAlg.New()
 	_, hashWriteErr := hashInstance.Write(plaintext)
-	if hashWriteErr!= nil{
+	if hashWriteErr != nil {
 		err = hashWriteErr
 		return
 	}
 	hashed := hashInstance.Sum(nil)
 
-	signByte, signErr := rsa.SignPKCS1v15(rand.Reader, privateKey , hashAlg, hashed)
+	signByte, signErr := rsa.SignPKCS1v15(rand.Reader, privateKey, hashAlg, hashed)
 	if signErr != nil {
 		err = signErr
 		return
@@ -229,21 +239,38 @@ func (r *rsaHelper) Verify(plaintext []byte, sign string, pubKeyPem []byte, hash
 		return
 	}
 
-	block,_:=pem.Decode(pubKeyPem)
+	block, _ := pem.Decode(pubKeyPem)
 
-	publicKey,x509DecodeErr :=x509.ParsePKIXPublicKey(block.Bytes)
-	if x509DecodeErr !=nil {
+	publicKey, x509DecodeErr := x509.ParsePKIXPublicKey(block.Bytes)
+	if x509DecodeErr != nil {
 		err = x509DecodeErr
 		return
 	}
 
 	hashInstance := hashAlg.New()
-	_,hashWriteErr:=hashInstance.Write(plaintext)
-	if hashWriteErr!= nil{
+	_, hashWriteErr := hashInstance.Write(plaintext)
+	if hashWriteErr != nil {
 		err = hashWriteErr
 		return
 	}
 	hashed := hashInstance.Sum(nil)
 
 	return rsa.VerifyPKCS1v15(publicKey.(*rsa.PublicKey), hashAlg, hashed, signBytes)
+}
+
+func isExist(path string) bool {
+	_, err := os.Stat(path)
+
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+
+		if os.IsNotExist(err) {
+			return false
+		}
+		return false
+	}
+
+	return true
 }

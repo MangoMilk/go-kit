@@ -6,8 +6,15 @@ import (
 	"testing"
 )
 
-func TestRSA(t *testing.T)  {
+type People struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
+func TestRSA(t *testing.T) {
+
 	r := NewRSA()
+	//pubKey, priKey, genPemErr := r.GeneratePem(2048, "./pem")
 	pubKey, priKey, genPemErr := r.GeneratePem(2048)
 	if genPemErr != nil {
 		panic(genPemErr)

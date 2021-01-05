@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <dbDriver>mysql</dbDriver>
+    <dbHost>127.0.0.1</dbHost>
+    <dbPort>3306</dbPort>
+    <db>test</db>
+    <dbUser>root</dbUser>
+    <dbPasswd>root</dbPasswd>
+    <receivers flag="true">
+        <age>16</age>
+        <user>U1</user>
+        <user>U2</user>
+    </receivers>
+</config>

@@ -9,6 +9,7 @@ Golang development kit.
     * [load toml](#Id-LoadToml)
 * Encrypt alg
     * [rsa](#Id-RSA)
+    * [aes](#Id-AES)
 
 ## Installation
 ```shell script
@@ -294,5 +295,39 @@ func ExampleEncrypt()  {
     cipherByte := r.Encrypt(dataByte, []byte(pubKey))
     fmt.Println("rsa Encrypt: ", string(cipherByte))
     fmt.Println("rsa Decrypt: ", r.Decrypt(cipherByte, []byte(priKey)))
+}
+```
+
+#### <a id="Id-AES">AES</a>
+```go
+import (
+    "github.com/MangoMilk/go-kit/encrypt"
+    "encoding/json"
+    "fmt"
+    "testing"
+)
+
+func ExampleEncrypt()  {
+    type People struct {
+        Name string
+    }
+    
+    secret := "asdfreqw34thv123"
+    dataByte, _ := json.Marshal(People{Name: "Dwarf"})
+
+    a := NewAES()
+    // encrypt
+    cipher, err := a.Encrypt(dataByte, secret)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println("AES Encrypt: ", string(cipher))
+    
+    // decrypt
+    data, aErr := a.Decrypt(cipher, secret)
+    if aErr != nil {
+        panic(aErr)
+    }
+    fmt.Println("AES Decrypt: ", string(data))
 }
 ```

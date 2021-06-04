@@ -9,14 +9,12 @@ import (
 )
 
 func LoadedYaml(filePath string, data interface{}) error {
-	var yamlByte []byte
 	yamlByte, ioErr := ioutil.ReadFile(filePath)
 	if ioErr != nil {
-		panic(ioErr)
+		return ioErr
 	}
 
-	err := yaml.Unmarshal(yamlByte, data)
-	if err != nil {
+	if err := yaml.Unmarshal(yamlByte, data);err != nil {
 		return err
 	}
 
@@ -24,14 +22,12 @@ func LoadedYaml(filePath string, data interface{}) error {
 }
 
 func LoadedJson(filePath string, data interface{}) error {
-	var jsonByte []byte
 	jsonByte, ioErr := ioutil.ReadFile(filePath)
 	if ioErr != nil {
-		panic(ioErr)
+		return ioErr
 	}
 
-	err := json.Unmarshal(jsonByte, data)
-	if err != nil {
+	if err := json.Unmarshal(jsonByte, data);err != nil {
 		return err
 	}
 
@@ -39,14 +35,12 @@ func LoadedJson(filePath string, data interface{}) error {
 }
 
 func LoadedXml(filePath string, data interface{}) error {
-	var xmlByte []byte
 	xmlByte, ioErr := ioutil.ReadFile(filePath)
 	if ioErr != nil {
-		panic(ioErr)
+		return ioErr
 	}
 
-	err := xml.Unmarshal(xmlByte, data)
-	if err != nil {
+	if err := xml.Unmarshal(xmlByte, data);err != nil {
 		return err
 	}
 
@@ -54,14 +48,7 @@ func LoadedXml(filePath string, data interface{}) error {
 }
 
 func LoadedToml(filePath string, data interface{}) error {
-	//var tomlByte []byte
-	//tomlByte, ioErr := ioutil.ReadFile(filePath)
-	//if ioErr != nil {
-	//	panic(ioErr)
-	//}
-
-	_, err := toml.DecodeFile(filePath, data)
-	if err != nil {
+	if _, err := toml.DecodeFile(filePath, data);err != nil {
 		return err
 	}
 

@@ -155,7 +155,39 @@ func (r *rsaHelper) Encrypt(plaintext, pubKeyPem []byte) (ciphertext []byte) {
 	if encryptErr != nil {
 		panic(encryptErr)
 	}
+	//避免数据过长报错，故分段加密
+	//partLen := pubKey.N.BitLen() / 8 - 11
+	//chunks := split(data, partLen)
+	//buffer := bytes.NewBufferString("")
+	//for _, chunk := range chunks {
+	//	bytes, err := rsa.EncryptPKCS1v15(rand.Reader, pubKey, chunk)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	buffer.Write(bytes)
+	//}
+	//return buffer.Bytes(), nil
 
+	//keySize, srcSize := publicKey.(*rsa.PublicKey).Size(), len(src)
+	//pub :=  publicKey.(*rsa.PublicKey)
+	////logs.Debug("密钥长度：", keySize, "\t明文长度：\t", srcSize)
+	////单次加密的长度需要减掉padding的长度，PKCS1为11
+	//offSet, once := 0, keySize-11
+	//buffer := bytes.Buffer{}
+	//for offSet < srcSize {
+	//	endIndex := offSet + once
+	//	if endIndex > srcSize {
+	//		endIndex = srcSize
+	//	}
+	//	// 加密一部分
+	//	bytesOnce, err := rsa.EncryptPKCS1v15(myrand.Reader, pub, src[offSet:endIndex])
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	buffer.Write(bytesOnce)
+	//	offSet = endIndex
+	//}
+	//bytesEncrypt = buffer.Bytes()
 	return
 }
 
@@ -180,7 +212,36 @@ func (r *rsaHelper) Decrypt(ciphertext, priKeyPem []byte) (plaintext []byte) {
 	if decryptErr != nil {
 		panic(decryptErr)
 	}
+	//partLen := priKey.N.BitLen() / 8
+	//chunks := split(data, partLen)
+	//buffer := bytes.NewBufferString("")
+	//for _, chunk := range chunks {
+	//	decrypted, err := rsa.DecryptPKCS1v15(rand.Reader, priKey, chunk)
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	buffer.Write(decrypted)
+	//}
+	//
+	//return buffer.Bytes(), nil
 
+	//keySize, srcSize := private.Size(), len(src)
+	////logs.Debug("密钥长度：", keySize, "\t密文长度：\t", srcSize)
+	//var offSet = 0
+	//var buffer = bytes.Buffer{}
+	//for offSet < srcSize {
+	//	endIndex := offSet + keySize
+	//	if endIndex > srcSize {
+	//		endIndex = srcSize
+	//	}
+	//	bytesOnce, err := rsa.DecryptPKCS1v15(myrand.Reader, private, src[offSet:endIndex])
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	buffer.Write(bytesOnce)
+	//	offSet = endIndex
+	//}
+	//bytesDecrypt = buffer.Bytes()
 	return
 }
 

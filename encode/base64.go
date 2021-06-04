@@ -13,7 +13,7 @@ func Base64Encoded(msg string) string {
 func Base64Decoded(msg string) (string, error) {
 	msgByte, err := base64.StdEncoding.DecodeString(msg)
 	if err != nil {
-		return "", errors.New("Base64 decode fail")
+		return "", errors.New("base64 decode fail")
 	}
 
 	return string(msgByte), nil

@@ -41,7 +41,9 @@ type clients struct {
 
 func TestLoadToml(t *testing.T) {
 	var tomlConf tomlConfig
-	LoadedToml("./toml_config.toml", &tomlConf)
+	if loadErr:=LoadedToml("./toml_config.toml", &tomlConf);loadErr != nil {
+		t.Log(loadErr)
+	}
 	t.Log(fmt.Sprintf("tomlConf: %+v", tomlConf))
 }
 
@@ -74,7 +76,9 @@ type yamlRedis struct {
 
 func TestLoadYaml(t *testing.T) {
 	var yamlConf yamlConfig
-	LoadedYaml("./yaml_config.yaml", &yamlConf)
+	if loadErr:=LoadedYaml("./yaml_config.yaml", &yamlConf);loadErr != nil {
+		t.Log(loadErr)
+	}
 	t.Log(fmt.Sprintf("yamlConf: %+v", yamlConf))
 }
 
@@ -102,8 +106,7 @@ type jsonDB struct {
 
 func TestLoadJson(t *testing.T) {
 	var jsonConf jsonConfig
-	loadErr := LoadedJson("./json_config.json", &jsonConf)
-	if loadErr != nil {
+	if loadErr := LoadedJson("./json_config.json", &jsonConf);loadErr != nil {
 		t.Log(loadErr)
 	}
 
@@ -132,8 +135,7 @@ type SReceivers struct {
 
 func TestLoadXml(t *testing.T) {
 	var xmlConf xmlConfig
-	loadErr := LoadedXml("./xml_config.xml", &xmlConf)
-	if loadErr != nil {
+	if loadErr := LoadedXml("./xml_config.xml", &xmlConf);loadErr != nil {
 		t.Log(loadErr)
 	}
 	t.Log(fmt.Sprintf("xmlConf: %+v", xmlConf))

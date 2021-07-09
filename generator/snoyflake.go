@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -22,6 +23,7 @@ var (
 )
 
 type snoyflakeGenerator struct {
+	lock              sync.Mutex
 	snoyflakeSequence int64
 	ip                []int64
 }
@@ -67,6 +69,8 @@ func (g *snoyflakeGenerator) GenID() (int64, error) {
 	tenMillisecondTimestamp := time.Now().UnixNano() / 1e7
 	tenMillisecondTimestamp = tenMillisecondTimestamp << 24
 
+	g.lock.Lock()
+	defer g.lock.Unlock()
 	g.snoyflakeSequence = (g.snoyflakeSequence + 1) & (256 - 1)
 
 	machine := (g.ip[2] << ipUnitBit) + g.ip[3]

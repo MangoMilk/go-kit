@@ -9,29 +9,31 @@ import (
 
 func TestEncrypt(t *testing.T) {
 
-	md5,_:=MD5("123")
+	md5, _ := MD5("123")
 	fmt.Println("MD5: ", md5)
 
-	sha1,_:=SHA1("123")
+	sha1, _ := SHA1("123")
 	fmt.Println("SHA1: ", sha1)
 
-	hmacSha1,_:=HmacSHA1("123", "encrypt")
+	hmacSha1, _ := HmacSHA1("123", "encrypt")
 	fmt.Println("HmacSHA1: ", hmacSha1)
 
-	hmacSha256,_:=HmacSHA256("123", "encrypt")
+	hmacSha256, _ := HmacSHA256("123", "encrypt")
 	fmt.Println("HmacSHA256: ", hmacSha256)
 }
 
 func TestAES(t *testing.T) {
+
 	type People struct {
 		Name string
 	}
 
 	jsonByte, _ := json.Marshal(People{Name: "JJ"})
-	secret := "asdfreqw34thv123"
+	//secret := "asdfreqw34thv123"
+	secret := "asdfreqw34thv123a34fgjkiu631szxc"
 	//iv := "dgy7reqw34thv123"
 
-	a := NewAES()
+	a := NewAES(ECB)
 	// encrypt
 	cipher, err := a.Encrypt(jsonByte, secret)
 	if err != nil {
@@ -51,8 +53,6 @@ func TestAES(t *testing.T) {
 	t.Log("AES Decrypt: ", d)
 
 }
-
-
 
 func TestRSA(t *testing.T) {
 

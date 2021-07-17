@@ -315,7 +315,7 @@ func ExampleEncrypt()  {
     secret := "asdfreqw34thv123"
     dataByte, _ := json.Marshal(People{Name: "Dwarf"})
 
-    a := NewAES()
+    a := NewAES(ECB)
     // encrypt
     cipher, err := a.Encrypt(dataByte, secret)
     if err != nil {

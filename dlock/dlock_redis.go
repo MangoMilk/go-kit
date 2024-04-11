@@ -6,7 +6,7 @@ import (
 )
 
 type DLockRedis struct {
-	instance *redis.Client
+	instance redis.UniversalClient
 }
 
 func (d *DLockRedis) Lock(key string, duration time.Duration) (bool, error) {
@@ -71,7 +71,7 @@ func (d *DLockRedis) Release(key string) (bool, error) {
 	return false, nil
 }
 
-func NewRedisDLock(instance *redis.Client) DLockInterface {
+func NewRedisDLock(instance redis.UniversalClient) DLockInterface {
 	return &DLockRedis{
 		instance: instance,
 	}

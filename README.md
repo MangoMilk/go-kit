@@ -10,7 +10,10 @@ Golang development kit.
 * Encrypt alg
     * [rsa](#Id-RSA)
     * [aes](#Id-AES)
-
+* Distributed lock
+  * [redis](#DLock)
+  * [zk]()
+  * [consul]()
 ## Installation
 ```shell script
 go get github.com/MangoMilk/go-kit
@@ -304,7 +307,6 @@ import (
     "github.com/MangoMilk/go-kit/encrypt"
     "encoding/json"
     "fmt"
-    "testing"
 )
 
 func ExampleEncrypt()  {
@@ -330,4 +332,39 @@ func ExampleEncrypt()  {
     }
     fmt.Println("AES Decrypt: ", string(data))
 }
+```
+
+### lock-kit
+
+#### <a id="DLock">Distributed lock</a>
+```go
+import (
+	"github.com/go-redis/redis"
+	"time"
+	"github.com/MangoMilk/go-kit/dlock"
+	"fmt"
+)
+
+func main() {
+
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "127.0.0.1:6379",
+		Password: "123465",
+		DB:       0,
+	})
+	_, err := rdb.Ping().Result()
+	if err != nil {
+		painc(err)
+	}
+
+	lockKey := "Test"
+	dLock := dlock.NewRedisDLock(rdb)
+	res, err := dLock.Lock(lockKey, time.Second*3)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(res)
+}
+
 ```
